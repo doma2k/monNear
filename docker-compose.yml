@@ -75,8 +75,8 @@ services:
     - '--tg'
     environment:
     - ALERTER_LISTEN_PORT=3033
-    - ALERTER_TG_BOT_TOKEN=5551387251:AAFMYHt4OCLC7gwkjc79dQDemYaKKWBNMxc
-    - ALERTER_TG_CHAT_ID=1933874030
+    - ALERTER_TG_BOT_TOKEN=$TELEGRAMTOKEN
+    - ALERTER_TG_CHAT_ID=$CHATID
     - ALERTER_TG_TMPL_PATH=./templates/default.tg.hbs
     ports:
       - 3033:3033
