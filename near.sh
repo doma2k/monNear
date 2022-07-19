@@ -96,5 +96,17 @@ fi
 
 # monitoring install
 IPADDR=$(curl ifconfig.me)
+if [ ! $TELEGRAMTOKEN ]; then
+echo -e "\e[31mGet bot token https://t.me/botfather .\e[39m"
+read -p "Enter telegram token: " TELEGRAMTOKEN
+echo 'export TELEGRAMTOKEN='\"${TELEGRAMTOKEN}\" >> $HOME/.bash_profile
+fi
+if [ ! $CHATID ]; then
+echo -e "\e[31mInvite @getidsbot or @RawDataBot to your group and get your group id from the chat id field .\e[39m"
+read -p "Enter telegram token: " TELEGRAMTOKEN
+echo 'export TELEGRAMTOKEN='\"${TELEGRAMTOKEN}\" >> $HOME/.bash_profile
+fi
 cd $HOME
-mkdir -p $HOME/monitoring
+git clone https://github.com/doma2k/monNear.git
+cd monNear
+docker-compose up -d
