@@ -1,0 +1,96 @@
+version: "3"
+
+networks:
+  monitoring:
+    driver: bridge
+    
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+    ports:
+      - 9095:9090
+    networks:
+      - monitoring
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    expose:
+      - 9093
+    networks:
+      - monitoring
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    restart: always
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+
+  nodeexporter:
+    image: prom/node-exporter:latest
+    container_name: nodeexporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    expose:
+      - 9100
+    networks:
+      - monitoring
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    ports:
+      - 3000:3000
+    networks:
+      - monitoring
+    depends_on:
+      - prometheus
+
+  alerter_tg:
+    image: ultram4rine/alerter
+    container_name: alerter_tg
+    command:
+    - '--tg'
+    environment:
+    - ALERTER_LISTEN_PORT=3033
+    - ALERTER_TG_BOT_TOKEN=5551387251:AAFMYHt4OCLC7gwkjc79dQDemYaKKWBNMxc
+    - ALERTER_TG_CHAT_ID=1933874030
+    - ALERTER_TG_TMPL_PATH=./templates/default.tg.hbs
+    ports:
+      - 3033:3033
+    networks:
+      - monitoring
+    restart: always
+
+ # near-exporter:
+ #   image: near-exporter:latest
+ #   container_name: near-exporter
+ #   ports:
+ #    - 8080:8080
+ #   networks:
+ #     - host
+ #cd   restart: always
+
+

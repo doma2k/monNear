@@ -1,0 +1,14 @@
+route:
+  group_wait: 20s
+  group_interval: 20s
+  repeat_interval: 5m
+  group_by: ['alertname', 'cluster', 'service']
+  receiver: 'alerter_tg'
+
+
+receivers:
+  - name: alerter_tg
+    webhook_configs:
+      - send_resolved: true
+        url: "http://alerter_tg:3033/tg"
+
