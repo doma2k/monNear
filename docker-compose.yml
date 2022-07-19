@@ -16,6 +16,7 @@ services:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
     command:
+      - '--enable-feature=expand-external-labels'
       - '--config.file=/etc/prometheus/prometheus.yml'
     restart: unless-stopped
     ports:
