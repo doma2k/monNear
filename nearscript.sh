@@ -19,13 +19,10 @@ else
 	  echo -e "\e[31mInstallation is not possible, your server does not support AVX2, change your server and try again.\e[39m"
 fi    
 
-
-if [ ! $NEAR_ENV ]; then
-read -p "Enter chain name: " NEAR_ENV
-echo 'export NEAR_ENV='\"${NEAR_ENV}\" >> $HOME/.bashrc
-fi
+export NEAR_ENV=shardnet
+echo 'export NEAR_ENV='\"${NEAR_ENV}\" >> $HOME/.bash_profile
+echo -e '\n\e[42mYour chain :' $NEAR_ENV '\e[0m\n'
 echo 'source $HOME/.bashrc' >> $HOME/.bash_profile
-echo "export WORKSPACE=\"$HOME/.near\"" >>$HOME/.bash_profile
 . $HOME/.bash_profile
 
 
@@ -36,24 +33,25 @@ sudo apt install build-essential nodejs -y
 PATH="$PATH"
 
 sudo npm install -g near-cli -y
-sudo apt install -y git binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev cmake gcc g++ python docker.io protobuf-compiler libssl-dev pkg-config clang llvm cargo -y
+sudo apt install -y git binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev cmake gcc g++ python protobuf-compiler libssl-dev pkg-config clang llvm -y
 sudo apt install python3-pip -y
 
 USER_BASE_BIN=$(python3 -m site --user-base)/bin
 export PATH="$USER_BASE_BIN:$PATH"
 
 sudo apt install clang build-essential make -y
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh 
 source $HOME/.cargo/env
+
 
 cd $HOME
 git clone https://github.com/near/nearcore
 cd nearcore
 git fetch
-
 git checkout 8448ad1ebf27731a43397686103aa5277e7f2fcf
 cargo build -p neard --release --features shardnet
-
+./target/release/neard --home ~/.near init --chain-id shardnet --download-genesis
 rm ~/.near/config.json
 wget -O ~/.near/config.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/config.json
 
@@ -80,15 +78,12 @@ EOF
 
 sudo mv $HOME/neard.service /etc/systemd/system
 sudo systemctl daemon-reload
-echo -e '\n\e[42mRunning a service\e[0m\n' && sleep 1
 sudo systemctl enable neard
 sudo systemctl restart neard
-echo -e '\n\e[42mCheck node status\e[0m\n' && sleep 1
 if [[ `service neard status | grep active` =~ "running" ]]; then
   echo -e "Your Neard node \e[32minstalled and works\e[39m!"
-  echo -e "You can check node status by the command \e[7mservice portad status\e[0m or \e[7mjournalctl -u neard -f\e[0m"
-  echo -e "Rotate your keys by the following command:"
+  echo -e "You can check node status by the command \e[7mservice neard status\e[0m or \e[7mjournalctl -u neard -f\e[0m"
 else
   echo -e "Your Near node \e[31mwas not installed correctly\e[39m, please reinstall."
 fi
-. $HOME/.bash_profile
+

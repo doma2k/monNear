@@ -24,14 +24,11 @@ scrape_configs:
            labels:
              label: "Server"
 
-      - job_name: "Node"
+      - job_name: "NodeRPC"
         static_configs:
-         - targets: ["$IPADDR:3030"] # replace with your node id
-           labels:
-             label: "StakeWars"
+         - targets: ["IPADDR:3030"] # replace with your node id
+
     
       - job_name: "NearExporter"
         static_configs:
-         - targets: ["$IPADDR:9333"] # replace with your node id
-           labels:
-             label: "NearExporter"
+         - targets: ["IPADDR:9333"] # replace with your node id
