@@ -12,7 +12,7 @@ chmod +x $HOME/monNear/shardnet.sh #Add permission
 <br />
 Usfull links:
 
-*  https://wallet.shardnet.near.org/
+*  Explorer: https://explorer.shardnet.near.org/
 
-
+*  Wallet: https://wallet.shardnet.near.org/
 
