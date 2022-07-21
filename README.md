@@ -14,10 +14,10 @@ Install node and cli: <br />
 * choose 1 option in installator
 
 Create wallet: <br /> 
-https://wallet.shardnet.near.org/
+* https://wallet.shardnet.near.org/
 
 Follow instractions "on Activating the node as validator" : <br />
-https://github.com/near/stakewars-iii/blob/main/challenges/002.md#activating-the-node-as-validator
+* https://github.com/near/stakewars-iii/blob/main/challenges/002.md#activating-the-node-as-validator
 
 2.Option: **Installing and configuring ping script for crontab, for contract call every 5 minut.** <br />
 3.Option: **Installing monitoring tools(prometheus,alertmanager,near-explorer,grafana,alertbot for telegram)** <br />
