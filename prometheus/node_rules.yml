@@ -16,3 +16,11 @@ groups:
        description: 'Validator missing block'
      labels:
        severity: 'critical'
+
+   - alert: Node is Syncing
+     expr: near_sync_status > 1
+     for: 1m
+     annotations:
+       description: 'Node is Syncing'
+     labels:
+       severity: 'critical'
