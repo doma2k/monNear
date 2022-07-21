@@ -15,7 +15,7 @@ chmod +x $HOME/monNear/shardnet.sh #Add permission
 
 !!Near login and keys managment will be done manualy.
 <br /><br />
-kk
+https://github.com/near/stakewars-iii/blob/main/challenges/002.md#activating-the-node-as-validator
 
 
 
