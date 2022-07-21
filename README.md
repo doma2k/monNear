@@ -22,4 +22,8 @@ Usfull links:
 
 ## Monitoring tool description:
 
-It contain: prometheus,alertmanager,grafana,near-explorer,alertbot
+* prometheus
+* alertmanager
+* grafana
+* near-explorer
+* alertbot
