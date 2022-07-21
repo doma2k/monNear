@@ -1,3 +1,5 @@
+Telegram: https://t.me/domanodes Discord: https://discord.com/users/doma2k#4006
+
 ## ShardNet node & monitoring installation: <br /> 
 Clone repo and start script:
 
