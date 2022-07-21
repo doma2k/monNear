@@ -27,8 +27,6 @@ scrape_configs:
       - job_name: "NodeRPC"
         static_configs:
          - targets: ["IPADDR:3030"] # replace with your node id
-           labels:
-             label: "NearNode"
     
       - job_name: "NearExporter"
         static_configs:
