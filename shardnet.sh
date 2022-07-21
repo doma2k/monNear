@@ -145,17 +145,14 @@ function installMonitoring {
   . $HOME/.bash_profile
 
   sed -i "s/IPADDR/"$IPADDR"/g" $HOME/monNear/prometheus/prometheus.yml
+  sed -i "s/IPADDR/"$IPADDR"/g" $HOME/monNear/grafana/provisioning/datasources/config.yml
   cd $HOME/monNear
   
-  read -p "Enter account id : " YOUR_ACCOUNT_ID
-  echo 'export YOUR_ACCOUNT_ID='\"${YOUR_ACCOUNT_ID}\" >>$HOME/.bash_profile
-
   sudo docker run -dit \
     --restart always \
     --name near-exporter \
     --network=host \
-    -p 9333:9333 \
-    masknetgoal634/near-prometheus-exporter:latest /dist/main -accountId $YOUR_ACCOUNT_ID.shardnet.near
+    -p 9333:9333 
 
   docker-compose up -d
 
