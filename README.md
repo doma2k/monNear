@@ -13,8 +13,8 @@ chmod +x $HOME/monNear/shardnet.sh #Add permission
 2.Option: **Installing and configuring ping script for crontab, to ping pool every 5 minut.** <br />
 3.Option: **Installing monitoring tools(prometheus,alertmanager,near-explorer,grafana,alertbot for telegram)** <br />
 
-!!Near login and keys managment will be done manualy.
-<br /><br />
+##Near login and keys managment will be done manualy.
+###Follow instractions "on Activating the node as validator"
 https://github.com/near/stakewars-iii/blob/main/challenges/002.md#activating-the-node-as-validator
 
 
