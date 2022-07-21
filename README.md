@@ -13,17 +13,13 @@ chmod +x $HOME/monNear/shardnet.sh #Add permission
 Usfull links:
 
 *  Explorer: https://explorer.shardnet.near.org/
-
 *  Wallet: https://wallet.shardnet.near.org/
-
 *  Node activation guide : https://github.com/near/stakewars-iii/blob/main/challenges/002.md#activating-the-node-as-validator
-
 *  Mounting a staking pool : https://github.com/near/stakewars-iii/blob/main/challenges/003.md#3-mounting-a-staking-pool
 
 ## Monitoring tool description:
 
-* prometheus
-* alertmanager
-* grafana
-* near-explorer
-* alertbot
+* prometheus: exposing port: 9095
+* grafana: exposing port: 3000
+* near-explorer: exposing port: 9333 
+* alertbot: requires to create own bot with https://t.me/botfather and use token for installation
