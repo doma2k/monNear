@@ -49,7 +49,7 @@ function setupNode {
   git clone https://github.com/near/nearcore
   cd nearcore
   git fetch
-  git checkout 0f81dca95a55f975b6e54fe6f311a71792e21698
+  git checkout 8448ad1ebf27731a43397686103aa5277e7f2fcf
   cargo build -p neard --release --features shardnet
   ./target/release/neard --home ~/.near init --chain-id shardnet --download-genesis
   rm ~/.near/config.json
@@ -152,7 +152,8 @@ function installMonitoring {
     --restart always \
     --name near-exporter \
     --network=host \
-    -p 9333:9333 
+    -p 9333:9333 \
+    masknetgoal634/near-prometheus-exporter:latest
 
   docker-compose up -d
 
