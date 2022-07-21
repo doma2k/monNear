@@ -105,7 +105,6 @@ function setupPing {
 
   sudo tee $HOME/monNear/ping.sh <<EOF >/dev/null
   export NEAR_ENV=shardnet
-  export LOGS=$HOME/logs
   export POOLID=$YOUR_POOL_ID
   export ACCOUNTID=$YOUR_ACCOUNT_ID
   echo 'source $HOME/.bashrc' >>$HOME/.bash_profile
