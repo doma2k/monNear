@@ -36,4 +36,4 @@ Bot will notify about critical events with network and server.
 
 
 Contacts:
-### Telegram: https://t.me/domanodes Discord: https://discord.com/users/doma2k#4006
+###### Telegram: https://t.me/domanodes Discord: https://discord.com/users/doma2k#4006
