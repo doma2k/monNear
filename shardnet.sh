@@ -104,13 +104,7 @@ function setupPing {
   echo -e '\n\e[42mYour chain :' $YOUR_POOL_ID '\e[0m\n'
 
   sudo tee $HOME/monNear/ping.sh <<EOF >/dev/null
-  export NEAR_ENV=shardnet
-  export POOLID=$YOUR_POOL_ID
-  export ACCOUNTID=$YOUR_ACCOUNT_ID
-  echo 'source $HOME/.bashrc' >>$HOME/.bash_profile
-  . $HOME/.bash_profile
-
-  near call "$POOLID.factory.shardnet.near ping" '{}' --accountId "$ACCOUNTID.shardnet.near" --gas=300000000000000 
+  near call $YOUR_POOL_ID.factory.shardnet.near ping '{}' --accountId $YOUR_ACCOUNT_ID.shardnet.near" --gas=300000000000000 
 EOF
   sudo chmod +x $HOME/monNear/ping.sh
   (
