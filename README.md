@@ -24,4 +24,7 @@ Usfull links:
 * near-explorer: exposing port: 9333 
 
 Alertbot: 
-* requires to create own bot with https://t.me/botfather and use token for installation
+* create bot with https://t.me/botfather and use token for installation
+* get chat id with https://t.me/RawDataBot and use token for installation
+
+Bot will notify about critical events with network and server.
