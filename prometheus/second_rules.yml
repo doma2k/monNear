@@ -3,7 +3,7 @@ groups:
   rules:
 
   - alert: HostDown
-    expr: up == 0
+    expr: up{label="Server"} == 0
     for: 1m
     labels:
       severity: major

@@ -2,42 +2,17 @@ groups:
  - name: Validator Node
    rules:
    - alert: instanse Down
-     expr: up == 0 
+     expr: up{job="NodeRPC"} == 0 
      for: 1m
      annotations:
-       description: '{{ $labels.label }} has been down for more than 1 minute.'
+       description: 'Near node has been down for more than 1 minute.'
      labels:
        severity: 'critical'
 
-   - alert: ValidatorMissingBlocks
-     expr: rate(tendermint_consensus_validator_missed_blocks[1m]) != 0
+   - alert: Validator missing blocks
+     expr: sum(near_validators_blocks_expected{account_id="YOUR_ACCOUNT_ID"} - near_validators_blocks_produced{account_id="YOUR_ACCOUNT_ID"}) >= 1
      for: 1m
-     labels:
-      severity: major
      annotations:
-       description: "{{ $labels.label }} Validator missing blocks (>=1 in last minute)"
-  
-   
-   - alert: ValidatorDegradedSyncing
-     expr: increase(tendermint_consensus_latest_block_height[5m]) < 40
-     for: 5m
+       description: 'Validator missing block'
      labels:
-       severity: major
-     annotations:
-       description: "{{ $labels.label }} Degraded syncing performance (less than 40 blocks in the last 5 min)"
-  
-   - alert: ValidatorTooFewPeers
-     expr: tendermint_p2p_peers < 5
-     for: 5m
-     labels:
-       severity: major
-     annotations:
-       description: "{{ $labels.label }} Number of peers is lower than threshold (<5)"
-
-   - alert: ValidatorVotingPower
-     expr: tendermint_consensus_validator_power == 0
-     for: 5m
-     labels:
-       severity: major
-     annotations:
-       description: "{{ $labels.label }} Voting pawer is 0"
+       severity: 'critical'
