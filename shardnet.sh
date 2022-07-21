@@ -54,10 +54,8 @@ function setupNode {
   ./target/release/neard --home ~/.near init --chain-id shardnet --download-genesis
   rm ~/.near/config.json
   wget -O ~/.near/config.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/config.json
-
   cd ~/.near
   wget https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/genesis.json
-
   sudo tee $HOME/neard.service <<EOF >/dev/null
 [Unit]
 Description=NEARd Daemon Service
@@ -87,7 +85,7 @@ EOF
     echo -e "Your Near node \e[31mwas not installed correctly\e[39m, please reinstall."
   fi
 
-reboot
+  sleep 5 && reboot
 
 }
 
@@ -98,27 +96,19 @@ function setupPing {
   else
     sudo apt update && sudo apt install crontab -y <"/dev/null"
   fi
+  sudo mkdir -p $HOME/monNear
+  sudo apt-get install postfix
 
-  if [ ! $USER_ID ]; then
-    read -p "Enter system user name: " USER_ID
-    echo 'export USER_ID='\"${USER_ID}\" >>$HOME/.bash_profile
-  fi
-  echo -e '\n\e[42mYour chain :' $USER_ID '\e[0m\n'
-
-  if [ ! $YOUR_ACCOUNT_ID ]; then
-    read -p "Enter account id: " YOUR_ACCOUNT_ID
-    echo 'export YOUR_ACCOUNT_ID='\"${YOUR_ACCOUNT_ID}\" >>$HOME/.bash_profile
-  fi
+  read -p "Enter account id : " YOUR_ACCOUNT_ID
+  echo 'export YOUR_ACCOUNT_ID='\"${YOUR_ACCOUNT_ID}\" >>$HOME/.bash_profile
   echo -e '\n\e[42mYour chain :' $YOUR_ACCOUNT_ID '\e[0m\n'
 
-  if [ ! $YOUR_POOL_ID ]; then
-    read -p "Enter your pool id: " YOUR_POOL_ID
-    echo 'export YOUR_POOL_ID='\"${YOUR_POOL_ID}\" >>$HOME/.bash_profile
-  fi
+  read -p "Enter your pool id: " YOUR_POOL_ID
+  echo 'export YOUR_POOL_ID='\"${YOUR_POOL_ID}\" >>$HOME/.bash_profile
   echo -e '\n\e[42mYour chain :' $YOUR_POOL_ID '\e[0m\n'
-
+  sudo tee $HOME/monNear/ping.sh <<EOF >/dev/null
   export NEAR_ENV=shardnet
-  export LOGS=/home/$USER_ID/logs
+  export LOGS=$HOME/logs
   export POOLID=$YOUR_POOL_ID
   export ACCOUNTID=$YOUR_ACCOUNT_ID
   echo 'source $HOME/.bashrc' >>$HOME/.bash_profile
@@ -130,6 +120,11 @@ function setupPing {
   near proposals | grep $POOLID >>$LOGS/all.log
   near validators current | grep $POOLID >>$LOGS/all.log
   near validators next | grep $POOLID >>$LOGS/all.log
+EOF
+  (
+    crontab -l 2>/dev/null
+    echo "*/5 * * * * $HOME/monNear/ping.sh"
+  ) | crontab -
 
 }
 
@@ -149,28 +144,25 @@ function installMonitoring {
   sudo apt update && sudo apt install git -y
   sudo git clone https://github.com/doma2k/monNear.git
 
-
   IPADDR=$(curl ifconfig.me)
   echo 'export IPADDR='\"${IPADDR}\" >>$HOME/.bash_profile
 
   echo -e "\e[31mGet bot token https://t.me/botfather .\e[39m"
   read -p "Enter telegram token: " TELEGRAMTOKEN
   echo 'export TELEGRAMTOKEN='\"${TELEGRAMTOKEN}\" >>$HOME/.bash_profile
-
   echo -e '\n\e[42mYour bot token :' $TELEGRAMTOKEN '\e[0m\n'
 
   echo -e "\e[31mInvite https://t.me/getidsbot or https://t.me/RawDataBot to your group and get your group id from the chat id field .\e[39m"
   read -p "Enter chat id : " CHATID
   echo 'export CHATID='\"${CHATID}\" >>$HOME/.bash_profile
-
   echo -e '\n\e[42mYour chat id :' $CHATID '\e[0m\n'
 
   echo 'source $HOME/.bashrc' >>$HOME/.bash_profile
   . $HOME/.bash_profile
 
+  sed -i "s/IPADDR/"$IPADDR"/g" $HOME/monNear/prometheus/prometheus.yml
   cd $HOME/monNear
   docker-compose up -d
-  reboot
 
 }
 
