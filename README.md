@@ -1,5 +1,5 @@
 ## ShardNet node & monitoring installation: <br /> 
-Input to commandline:
+Input in commandline:
 
 ```
 sudo apt update && sudo apt install git -y #install git
