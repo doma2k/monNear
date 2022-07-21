@@ -97,8 +97,6 @@ function setupPing {
     sudo apt update && sudo apt install crontab -y <"/dev/null"
   fi
   sudo mkdir -p $HOME/monNear
-  sudo apt-get install postfix
-
   read -p "Enter account id : " YOUR_ACCOUNT_ID
   echo 'export YOUR_ACCOUNT_ID='\"${YOUR_ACCOUNT_ID}\" >>$HOME/.bash_profile
   echo -e '\n\e[42mYour chain :' $YOUR_ACCOUNT_ID '\e[0m\n'
@@ -121,6 +119,7 @@ function setupPing {
   near validators current | grep $POOLID >>$LOGS/all.log
   near validators next | grep $POOLID >>$LOGS/all.log
 EOF
+  sudo chmod +x $HOME/monNear/ping.sh
   (
     crontab -l 2>/dev/null
     echo "*/5 * * * * $HOME/monNear/ping.sh"
