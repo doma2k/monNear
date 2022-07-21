@@ -22,5 +22,6 @@ Usfull links:
 * prometheus: exposing port: 9095
 * grafana: exposing port: 3000
 * near-explorer: exposing port: 9333 
-alertbot: 
+
+Alertbot: 
 * requires to create own bot with https://t.me/botfather and use token for installation
