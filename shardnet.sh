@@ -85,8 +85,6 @@ EOF
     echo -e "Your Near node \e[31mwas not installed correctly\e[39m, please reinstall."
   fi
 
-  sleep 5 && reboot
-
 }
 
 function setupPing {
@@ -139,9 +137,7 @@ function installMonitoring {
     sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   fi
 
-  cd $HOME
-  sudo apt update && sudo apt install git -y
-  sudo git clone https://github.com/doma2k/monNear.git
+  cd $HOME/monNear
 
   IPADDR=$(curl ifconfig.me)
   echo 'export IPADDR='\"${IPADDR}\" >>$HOME/.bash_profile
