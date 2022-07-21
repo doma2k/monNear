@@ -1,5 +1,5 @@
 ## ShardNet node & monitoring installation: <br /> 
-Clone repo and start script
+Clone repo and start script:
 
 ```
 sudo apt update && sudo apt install git -y #install git
@@ -15,7 +15,9 @@ Installator description: <br />
 2.Option: **Installing and configuring ping script for crontab, for contract call every 5 minut.** <br />
 3.Option: **Installing monitoring tools(prometheus,alertmanager,near-explorer,grafana,alertbot for telegram)** <br />
 
-### Setup steps:
+Create wallet: <br /> 
+https://wallet.shardnet.near.org/
+
 **Follow instractions "on Activating the node as validator" :*
 https://github.com/near/stakewars-iii/blob/main/challenges/002.md#activating-the-node-as-validator
 
