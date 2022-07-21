@@ -14,5 +14,8 @@ chmod +x $HOME/monNear/shardnet.sh #Add permission
 3.Option: **Installing monitoring tools(prometheus,alertmanager,near-explorer,grafana,alertbot for telegram)** <br />
 
 !!Near login and keys managment will be done manualy.
+<br /><br />
+kk
+
 
 
