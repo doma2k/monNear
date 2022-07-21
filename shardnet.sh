@@ -110,7 +110,7 @@ function setupPing {
   echo 'source $HOME/.bashrc' >>$HOME/.bash_profile
   . $HOME/.bash_profile
 
-  near call $POOLID.factory.shardnet.near ping '{}' --accountId $ACCOUNTID.shardnet.near --gas=300000000000000 >>$LOGS/all.log
+  near call $POOLID.factory.shardnet.near ping '{}' --accountId $ACCOUNTID.shardnet.near --gas=300000000000000 
 EOF
   sudo chmod +x $HOME/monNear/ping.sh
   (
