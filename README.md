@@ -18,7 +18,7 @@ Installator description: <br />
 Create wallet: <br /> 
 https://wallet.shardnet.near.org/
 
-Follow instractions "on Activating the node as validator" :
+Follow instractions "on Activating the node as validator" : <br />
 https://github.com/near/stakewars-iii/blob/main/challenges/002.md#activating-the-node-as-validator
 
 
