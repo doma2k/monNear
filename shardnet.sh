@@ -102,6 +102,7 @@ function setupPing {
   read -p "Enter your pool id: " YOUR_POOL_ID
   echo 'export YOUR_POOL_ID='\"${YOUR_POOL_ID}\" >>$HOME/.bash_profile
   echo -e '\n\e[42mYour chain :' $YOUR_POOL_ID '\e[0m\n'
+
   sudo tee $HOME/monNear/ping.sh <<EOF >/dev/null
   export NEAR_ENV=shardnet
   export LOGS=$HOME/logs
@@ -110,12 +111,7 @@ function setupPing {
   echo 'source $HOME/.bashrc' >>$HOME/.bash_profile
   . $HOME/.bash_profile
 
-  echo "---" >>$LOGS/all.log
-  date >>$LOGS/all.log
   near call $POOLID.factory.shardnet.near ping '{}' --accountId $ACCOUNTID.shardnet.near --gas=300000000000000 >>$LOGS/all.log
-  near proposals | grep $POOLID >>$LOGS/all.log
-  near validators current | grep $POOLID >>$LOGS/all.log
-  near validators next | grep $POOLID >>$LOGS/all.log
 EOF
   sudo chmod +x $HOME/monNear/ping.sh
   (
