@@ -10,6 +10,7 @@
 
 ### Input commands:
 ```
-sudo apt update && sudo apt install git -y <br />
-git clone https://github.com/doma2k/monNear.git <br />
-chmod +x $HOME/monNear/shardnet.sh <br />
+$ sudo apt update && sudo apt install git -y #install git
+$ git clone https://github.com/doma2k/monNear.git #Clone repo
+$ chmod +x $HOME/monNear/shardnet.sh #Add permission 
+$ ~/monNear/shardnet.sh #Start script
