@@ -16,3 +16,6 @@ Usfull links:
 
 *  Wallet: https://wallet.shardnet.near.org/
 
+*  Node activation guide : https://github.com/near/stakewars-iii/blob/main/challenges/002.md#activating-the-node-as-validator
+
+*  Mounting a staking pool : https://github.com/near/stakewars-iii/blob/main/challenges/003.md#3-mounting-a-staking-pool
