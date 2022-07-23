@@ -32,7 +32,9 @@ Bot will notify about critical events with network and server.
 
 <img width="1438" alt="Screen Shot 2022-07-21 at 16 07 16" src="https://user-images.githubusercontent.com/79820904/180241361-4532166c-4f8b-4b65-abf2-f1690d71fd14.png">
 
-## Indexer and bucket
+## Shardnet indexer and custom bucket guide:
+Download repo and build binary:
+
 
 Publick shardnet bucket : http://bucket.shardnet.domanodes.com/
 
