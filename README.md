@@ -33,13 +33,13 @@ Bot will notify about critical events with network and server.
 <img width="1438" alt="Screen Shot 2022-07-21 at 16 07 16" src="https://user-images.githubusercontent.com/79820904/180241361-4532166c-4f8b-4b65-abf2-f1690d71fd14.png">
 
 ## Shardnet indexer and custom bucket guide:
-Download near-lake-indexer and build binary:
+* Download near-lake-indexer and build binary:
 ```
 cd $HOME
 git clone https://github.com/near/near-lake-indexer.git
 cd $HOME/near-lake-indexer && cargo build --release
 ```
-Configure near-lake-indexer:
+* Configure near-lake-indexer:
 ```
 ./target/release/near-lake --home ~/.near init --chain-id shardnet --download-config --download-genesis
 
@@ -49,6 +49,14 @@ wget -O ~/.near/config.json https://s3-us-west-1.amazonaws.com/build.nearprotoco
 rm ~/.near/genesis.json
 wget -O ~/.near/config.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/genesis.json
 ```
+* Setup and configure Custom S3 storage:
+```
+cd $HOME/near-lake-indexer
+wget https://dl.min.io/server/minio/release/linux-amd64/minio
+chmod +x minio
+mkdir ~/.aws && nano ~/.aws/credentials
+```
+*
 
 
 Contacts:
