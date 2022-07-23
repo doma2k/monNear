@@ -57,6 +57,7 @@ chmod +x minio
 mkdir -p /data/ && MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=password ./minio server /data
 ```
 * Login to console and set 
+
 Buckets => Summary => Access Policy = public
 
 Configuration => Server Location = eu-central-1
