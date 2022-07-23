@@ -49,15 +49,28 @@ wget -O ~/.near/config.json https://s3-us-west-1.amazonaws.com/build.nearprotoco
 rm ~/.near/genesis.json
 wget -O ~/.near/config.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/genesis.json
 ```
-* Setup and configure Custom S3 storage:
+* Setup and run Custom S3 storage:
 ```
 cd $HOME/near-lake-indexer
 wget https://dl.min.io/server/minio/release/linux-amd64/minio
 chmod +x minio
-mkdir ~/.aws && nano ~/.aws/credentials
+mkdir -p /data/ && MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=password ./minio server /data
 ```
-*
+* Login to console and set 
+Buckets => Summary => Access Policy = public
+Configuration => Server Location = eu-central-1
 
+* Set credentials in ~/.aws/credentials:
+```
+[default]
+aws_access_key_id=admin
+aws_secret_access_key=password
+```
+* run near-lake-indexer
+```
+cd $HOME/near-lake-indexer
+./target/release/near-lake --home ~/.near run --endpoint http://127.0.0.1:9000 --bucket near-lake-custom --region eu-central-1 sync-from-latest
+```
 
 Contacts:
 ###### Telegram: https://t.me/domanodes Discord: https://discord.com/users/doma2k#4006
