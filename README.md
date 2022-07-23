@@ -58,9 +58,9 @@ mkdir -p /data/ && MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=password ./minio se
 ```
 * Login to console and set 
 
-Buckets => Summary => Access Policy = public
+**Buckets => Summary => Access Policy = public**
 
-Configuration => Server Location = eu-central-1
+**Configuration => Server Location = eu-central-1**
 
 * Set credentials in ~/.aws/credentials:
 ```
