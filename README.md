@@ -71,6 +71,10 @@ aws_secret_access_key=password
 cd $HOME/near-lake-indexer
 ./target/release/near-lake --home ~/.near run --endpoint http://127.0.0.1:9000 --bucket near-lake-custom --region eu-central-1 sync-from-latest
 ```
+Source: 
+https://github.com/near/near-lake-indexer
+
+
 
 Contacts:
 ###### Telegram: https://t.me/domanodes Discord: https://discord.com/users/doma2k#4006
