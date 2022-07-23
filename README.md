@@ -56,11 +56,11 @@ wget https://dl.min.io/server/minio/release/linux-amd64/minio
 chmod +x minio
 mkdir -p /data/ && MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=password ./minio server /data
 ```
-* Login to console and set 
+* Login to console and set changes:
 
-**Buckets => Summary => Access Policy = public**
+*Buckets => Summary => Access Policy = public*
 
-**Configuration => Server Location = eu-central-1**
+*Configuration => Server Location = eu-central-1*
 
 * Set credentials in ~/.aws/credentials:
 ```
