@@ -8,8 +8,8 @@ git clone https://github.com/doma2k/monNear.git  #Clone repo
 chmod +x $HOME/monNear/shardnet.sh #Add permission 
 ~/monNear/shardnet.sh #Start script
 ```
-
-<img width="220" alt="Screen Shot 2022-07-21 at 9 18 43" src="https://user-images.githubusercontent.com/79820904/180143201-da262fac-8ff9-4ec4-830c-c7b5930fd33a.png"> <br />
+<img width="407" alt="Screen Shot 2022-07-27 at 13 54 07" src="https://user-images.githubusercontent.com/79820904/181230474-3248bcf3-9b25-4e55-9950-a9a8796de171.png">
+ <br />
 <br />
 Usefull links:
 
@@ -17,12 +17,14 @@ Usefull links:
 *  Wallet: https://wallet.shardnet.near.org/
 *  Node activation guide : https://github.com/near/stakewars-iii/blob/main/challenges/002.md#activating-the-node-as-validator
 *  Mounting a staking pool : https://github.com/near/stakewars-iii/blob/main/challenges/003.md#3-mounting-a-staking-pool
+*  Near-Lake-Indexer : https://github.com/near/near-lake-indexer
 
 ## Monitoring tool description:
 
 * prometheus: exposing port: 9095
 * grafana: exposing port: 3000 (login: admin pass: admin) 
 * near-explorer: exposing port: 9333 
+* custom S3 storage port: 9000
 
 Alertbot: 
 * create bot with https://t.me/botfather and use token for installation
