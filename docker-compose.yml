@@ -85,13 +85,5 @@ services:
       - monitoring
     restart: always
 
- # near-exporter:
- #   image: near-exporter:latest
- #   container_name: near-exporter
- #   ports:
- #    - 8080:8080
- #   networks:
- #     - host
- #cd   restart: always
 
 

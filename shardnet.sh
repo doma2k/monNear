@@ -147,7 +147,7 @@ function installMonitoring {
   sed -i "s/IPADDR/"$IPADDR"/g" $HOME/monNear/prometheus/prometheus.yml
   sed -i "s/IPADDR/"$IPADDR"/g" $HOME/monNear/grafana/provisioning/datasources/config.yml
   cd $HOME/monNear
-  
+
   sudo docker run -dit \
     --restart always \
     --name near-exporter \
@@ -159,8 +159,115 @@ function installMonitoring {
 
 }
 
+function nearlakeindexer {
+
+  if exists crontab; then
+    echo ''
+  else
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    source $HOME/.cargo/env
+  fi
+  cd $HOME
+  git clone https://github.com/near/near-lake-indexer.git
+  cd $HOME/near-lake-indexer && cargo build --release
+
+  ./target/release/near-lake --home ~/.near/indexer init --chain-id shardnet --download-config --download-genesis
+
+  rm ~/.near/config.json
+  wget -O ~/.near/indexer/config.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/config.json
+
+  rm ~/.near/genesis.json
+  wget -O ~/.near/indexer/genesis.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/genesis.json
+
+  echo -e "\e[31mInput your login .\e[39m"
+  read -p "Login : " MINIO_ROOT_USER
+  echo 'export MINIO_ROOT_USER='\"${MINIO_ROOT_USER}\" >>$HOME/.bash_profile
+  echo -e '\n\e[42mYour login :' $MINIO_ROOT_USER '\e[0m\n'
+
+  echo -e "\e[31mInput your password .\e[39m"
+  read -p "Password : " MINIO_ROOT_PASSWORD
+  echo 'export MINIO_ROOT_PASSWORD='\"${MINIO_ROOT_PASSWORD}\" >>$HOME/.bash_profile
+  echo -e '\n\e[42mYour login :' $MINIO_ROOT_PASSWORD '\e[0m\n'
+
+  echo 'source $HOME/.bashrc' >>$HOME/.bash_profile
+  . $HOME/.bash_profile
+
+  sudo tee $HOME/.aws/credentials <<EOF >/dev/null
+[default]
+aws_access_key_id="$MINIO_ROOT_USER"
+aws_secret_access_key="$MINIO_ROOT_PASSWORD"
+EOF
+
+  cd $HOME/near-lake-indexer
+  wget https://dl.min.io/server/minio/release/linux-amd64/minio
+  chmod +x minio
+  mkdir -p /data/ && MINIO_ROOT_USER="$MINIO_ROOT_USER" MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD"
+
+  sudo tee $HOME/minio.service <<EOF >/dev/null
+[Unit]
+Description=Minio Daemon Service
+After=network-online.target
+[Service]
+Type=simple
+User=$USER
+WorkingDirectory=$HOME/near-lake-indexer/data
+ExecStart=$HOME/near-lake-indexer/minio server /data
+Restart=on-failure
+RestartSec=30
+KillSignal=SIGINT
+TimeoutStopSec=45
+KillMode=mixed
+[Install]
+WantedBy=multi-user.target
+EOF
+  sudo mv $HOME/minio.service /etc/systemd/system
+
+  sudo tee $HOME/indexer.service <<EOF >/dev/null
+[Unit]
+Description=Indexer Daemon Service
+After=network-online.target
+[Service]
+Type=simple
+User=$USER
+WorkingDirectory=$HOME/.near/indexer
+ExecStart=$HOME/near-lake-indexer/target/release/near-lake --home ~/.near/indexer run --endpoint http://127.0.0.1:9000 --bucket near-lake-custom --region eu-central-1 sync-from-latest
+Restart=on-failure
+RestartSec=30
+KillSignal=SIGINT
+TimeoutStopSec=45
+KillMode=mixed
+[Install]
+WantedBy=multi-user.target
+EOF
+
+  sudo mv $HOME/indexer.service /etc/systemd/system
+  sudo systemctl daemon-reload
+
+  echo -e "\e[31mInput indexer RPC port .\e[39m"
+  read -p "Indexer PRC : " RPC
+  echo 'export RPC='\"${RPC}\" >>$HOME/.bash_profile
+  echo -e '\n\e[42mYour RPC port :' $RPC '\e[0m\n'
+
+  echo -e "\e[31mInput network port .\e[39m"
+  read -p "Password : " NETWORK
+  echo 'export NETWORK='\"${NETWORK}\" >>$HOME/.bash_profile
+  echo -e '\n\e[42mYour network port :' $NETWORK '\e[0m\n'
+
+  echo 'source $HOME/.bashrc' >>$HOME/.bash_profile
+  . $HOME/.bash_profile
+
+  sed -i 's/3030/'$RPC'/' $HOME/.near/indexer/config.json
+  sed -i 's/24567/'$NETWORK'/' $HOME/.near/indexer/config.json
+
+  sudo systemctl enable minio
+  sudo systemctl restart minio
+  sudo systemctl enable indexer
+  sudo systemctl restart indexer
+
+}
+
 PS3='Please enter your choice (input your option number and press enter): '
-options=("Install Node and CLI" "Install Ping" "Install monitoring and alertbot")
+options=("Install Node and CLI" "Install Ping" "Install monitoring and alertbot" "Install near-lake-indexer and custom bucket")
 select opt in "${options[@]}"; do
   case $opt in
   "Install Node and CLI")
@@ -178,6 +285,12 @@ select opt in "${options[@]}"; do
     echo -e '\n\e[33mYou choose Install monitoring and alertbot...\e[0m\n' && sleep 1
     installMonitoring
     echo -e '\n\e[33mYour node is monitored!\e[0m\n' && sleep 1
+    break
+    ;;
+  "Install near-lake-indexer and custom bucket")
+    echo -e '\n\e[33mYou choose near-lake-indexer and custom bucket...\e[0m\n' && sleep 1
+    nearlakeindexer
+    echo -e '\n\e[33mBucket available at port : 9000!\e[0m\n' && sleep 1
     break
     ;;
   esac
