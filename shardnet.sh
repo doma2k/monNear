@@ -49,7 +49,7 @@ function setupNode {
   git clone https://github.com/near/nearcore
   cd nearcore
   git fetch
-  git checkout 0f81dca95a55f975b6e54fe6f311a71792e21698
+  git checkout 0d7f272afabc00f4a076b1c89a70ffc62466efe9
   cargo build -p neard --release --features shardnet
   ./target/release/neard --home ~/.near init --chain-id shardnet --download-genesis
   rm ~/.near/config.json
@@ -192,6 +192,8 @@ function nearlakeindexer {
   echo 'source $HOME/.bashrc' >>$HOME/.bash_profile
   . $HOME/.bash_profile
 
+  sudo mkdir -p $HOME/.aws
+  sudo touch $HOME/.aws/credentials
   sudo tee $HOME/.aws/credentials <<EOF >/dev/null
 [default]
 aws_access_key_id="$MINIO_ROOT_USER"
@@ -201,7 +203,8 @@ EOF
   cd $HOME/near-lake-indexer
   wget https://dl.min.io/server/minio/release/linux-amd64/minio
   chmod +x minio
-  mkdir -p /data/ && MINIO_ROOT_USER="$MINIO_ROOT_USER" MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD"
+  mkdir -p /data/ 
+  MINIO_ROOT_USER="$MINIO_ROOT_USER" MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD"
 
   sudo tee $HOME/minio.service <<EOF >/dev/null
 [Unit]
@@ -210,7 +213,6 @@ After=network-online.target
 [Service]
 Type=simple
 User=$USER
-WorkingDirectory=$HOME/near-lake-indexer/data
 ExecStart=$HOME/near-lake-indexer/minio server /data
 Restart=on-failure
 RestartSec=30
@@ -229,8 +231,7 @@ After=network-online.target
 [Service]
 Type=simple
 User=$USER
-WorkingDirectory=$HOME/.near/indexer
-ExecStart=$HOME/near-lake-indexer/target/release/near-lake --home ~/.near/indexer run --endpoint http://127.0.0.1:9000 --bucket near-lake-custom --region eu-central-1 sync-from-latest
+ExecStart=$HOME/near-lake-indexer/target/release/near-lake --home ~/.near/indexer/ run --endpoint http://127.0.0.1:9000 --bucket near-lake-custom --region eu-central-1 sync-from-latest
 Restart=on-failure
 RestartSec=30
 KillSignal=SIGINT
@@ -247,9 +248,9 @@ EOF
   read -p "Indexer PRC : " RPC
   echo 'export RPC='\"${RPC}\" >>$HOME/.bash_profile
   echo -e '\n\e[42mYour RPC port :' $RPC '\e[0m\n'
-
+d
   echo -e "\e[31mInput network port .\e[39m"
-  read -p "Password : " NETWORK
+  read -p "Network port : " NETWORK
   echo 'export NETWORK='\"${NETWORK}\" >>$HOME/.bash_profile
   echo -e '\n\e[42mYour network port :' $NETWORK '\e[0m\n'
 
@@ -258,6 +259,8 @@ EOF
 
   sed -i 's/3030/'$RPC'/' $HOME/.near/indexer/config.json
   sed -i 's/24567/'$NETWORK'/' $HOME/.near/indexer/config.json
+
+  MINIO_ROOT_USER="$MINIO_ROOT_USER" MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD"
 
   sudo systemctl enable minio
   sudo systemctl restart minio
