@@ -175,10 +175,10 @@ function nearlakeindexer {
 
   ./target/release/near-lake --home ~/.near/indexer init --chain-id shardnet --download-config --download-genesis
 
-  rm ~/.near/config.json
+  rm ~/.near/indexer/config.json
   wget -O ~/.near/indexer/config.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/config.json
 
-  rm ~/.near/genesis.json
+  rm ~/.near/indexer/genesis.json
   wget -O ~/.near/indexer/genesis.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/genesis.json
 
   echo -e "\e[31mInput your login .\e[39m"
