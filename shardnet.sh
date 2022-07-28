@@ -53,6 +53,7 @@ function setupNode {
   cargo build -p neard --release --features shardnet
   ./target/release/neard --home ~/.near init --chain-id shardnet --download-genesis
   rm ~/.near/config.json
+  rm ~/.near/genesis.json
   wget -O ~/.near/config.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/config.json
   cd ~/.near
   wget https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/genesis.json
