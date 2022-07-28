@@ -110,7 +110,7 @@ EOF
   sudo chmod +x $HOME/monNear/ping.sh
   (
     crontab -l 2>/dev/null
-    echo "*/5 * * * * $HOME/monNear/ping.sh"
+    echo "0 */2 * * * $HOME/monNear/ping.sh"
   ) | crontab -
 
 }
