@@ -98,13 +98,14 @@ function setupPing {
   sudo mkdir -p $HOME/monNear
   read -p "Enter account id : " YOUR_ACCOUNT_ID
   echo 'export YOUR_ACCOUNT_ID='\"${YOUR_ACCOUNT_ID}\" >>$HOME/.bash_profile
-  echo -e '\n\e[42mYour chain :' $YOUR_ACCOUNT_ID '\e[0m\n'
+  echo -e '\n\e[42mYour AccountId :' $YOUR_ACCOUNT_ID '\e[0m\n'
 
   read -p "Enter your pool id: " YOUR_POOL_ID
   echo 'export YOUR_POOL_ID='\"${YOUR_POOL_ID}\" >>$HOME/.bash_profile
   echo -e '\n\e[42mYour chain :' $YOUR_POOL_ID '\e[0m\n'
 
   sudo tee $HOME/monNear/ping.sh <<EOF >/dev/null
+  export NEAR_ENV=shardnet
   near call $YOUR_POOL_ID.factory.shardnet.near ping '{}' --accountId $YOUR_ACCOUNT_ID.shardnet.near --gas=300000000000000 
 EOF
   sudo chmod +x $HOME/monNear/ping.sh
@@ -214,6 +215,8 @@ After=network-online.target
 [Service]
 Type=simple
 User=$USER
+Environment="MINIO_ROOT_USER=$MINIO_ROOT_USER"
+Environment="MINIO_ROOT_PASSWORD=$MINIO_ROOT_PASSWORD"
 ExecStart=$HOME/near-lake-indexer/minio server /data
 Restart=on-failure
 RestartSec=30
@@ -249,7 +252,6 @@ EOF
   read -p "Indexer PRC : " RPC
   echo 'export RPC='\"${RPC}\" >>$HOME/.bash_profile
   echo -e '\n\e[42mYour RPC port :' $RPC '\e[0m\n'
-d
   echo -e "\e[31mInput network port .\e[39m"
   read -p "Network port : " NETWORK
   echo 'export NETWORK='\"${NETWORK}\" >>$HOME/.bash_profile
