@@ -19,7 +19,7 @@ Usefull links:
 *  Mounting a staking pool : https://github.com/near/stakewars-iii/blob/main/challenges/003.md#3-mounting-a-staking-pool
 *  Near-Lake-Indexer : https://github.com/near/near-lake-indexer
 
-## Ports description:
+Ports description:
 
 * prometheus: exposing port: 9095
 * grafana: exposing port: 3000 (login: admin pass: admin) 
