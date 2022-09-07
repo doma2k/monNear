@@ -32,7 +32,8 @@ Alertbot:
 
 Bot will notify about critical events with network and server.
 
-<img width="1438" alt="Screen Shot 2022-07-21 at 16 07 16" src="https://user-images.githubusercontent.com/79820904/180241361-4532166c-4f8b-4b65-abf2-f1690d71fd14.png">
+<img width="1440" alt="Screen Shot 2022-09-07 at 13 02 30" src="https://user-images.githubusercontent.com/79820904/188851418-42ffaba6-2696-4423-8eba-5b5efab24eb2.png">
+
 
 
 Contacts:
