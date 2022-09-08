@@ -1,7 +1,10 @@
 #!/bin/bash
+
 exists() {
   command -v "$1" >/dev/null 2>&1
 }
+
+# Pre-requisits
 
 if exists curl; then
   echo ''
@@ -18,6 +21,8 @@ if grep -q avx2 /proc/cpuinfo; then
 else
   echo -e "\e[31mInstallation is not possible, your server does not support AVX2, change your server and try again.\e[39m"
 fi
+
+# Set up Near node
 
 function setupNode {
 
@@ -88,6 +93,8 @@ EOF
 
 }
 
+# Set up ping
+
 function setupPing {
 
   if exists crontab; then
@@ -115,6 +122,8 @@ EOF
   ) | crontab -
 
 }
+
+# Install alerts and monitoring tools
 
 function installMonitoring {
 
@@ -161,6 +170,8 @@ function installMonitoring {
 
 }
 
+# Indexer install
+
 function nearlakeindexer {
 
   if exists crontab; then
@@ -205,7 +216,7 @@ EOF
   cd $HOME/near-lake-indexer
   wget https://dl.min.io/server/minio/release/linux-amd64/minio
   chmod +x minio
-  mkdir -p /data/ 
+  mkdir -p /data/
   MINIO_ROOT_USER="$MINIO_ROOT_USER" MINIO_ROOT_PASSWORD="$MINIO_ROOT_PASSWORD"
 
   sudo tee $HOME/minio.service <<EOF >/dev/null
@@ -271,9 +282,45 @@ EOF
   sudo systemctl restart indexer
 
 }
+# Backup Data
+function backupData {
+  DATE=$(date +%Y-%m-%d-%H-%M)
+  DATADIR=~/.near
+  BACKUPDIR=~/.near/backups/near_${DATE}
+
+  mkdir -p $BACKUPDIR
+
+  sudo systemctl stop neard.service
+
+  wait
+
+  echo "NEAR node was stopped" | ts
+
+  if [ -d "$BACKUPDIR" ]; then
+    echo "Backup started" | ts
+
+    cp -rf $DATADIR/data/ ${BACKUPDIR}/
+    cd ~/.near/backups
+    tar -zcvf ${DATE}.tar ~/.near/backups/near_${DATE}
+    rm -r ~/.near/backups/near_${DATE}
+    # Submit backup completion status, you can use healthchecks.io, betteruptime.com or other services
+    # Example
+    # curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/4643d234-562b-4ebe-9414-14c1c983bded
+
+    echo "Backup completed" | ts
+  else
+    echo $BACKUPDIR is not created. Check your permissions.
+    exit 0
+  fi
+
+  sudo systemctl start neard.service
+
+  echo "NEAR node was started" | ts
+}
+# Menu
 
 PS3='Please enter your choice (input your option number and press enter): '
-options=("Install Node and CLI" "Install Ping" "Install monitoring and alertbot" "Install near-lake-indexer and custom bucket")
+options=("Install Node and CLI" "Install Ping" "Install monitoring and alertbot" "Install near-lake-indexer and custom bucket" "Create Node BackUp")
 select opt in "${options[@]}"; do
   case $opt in
   "Install Node and CLI")
@@ -297,6 +344,12 @@ select opt in "${options[@]}"; do
     echo -e '\n\e[33mYou choose near-lake-indexer and custom bucket...\e[0m\n' && sleep 1
     nearlakeindexer
     echo -e '\n\e[33mBucket available at port : 9000!\e[0m\n' && sleep 1
+    break
+    ;;
+  "Create Node BackUp")
+    echo -e '\n\e[33mData folder backup\e[0m\n' && sleep 1
+    backupData
+    echo -e '\n\e[33mBackup finished\e[0m\n' && sleep 1
     break
     ;;
   esac
