@@ -9,7 +9,6 @@ chmod +x $HOME/monNear/shardnet.sh #Add permission
 ~/monNear/shardnet.sh #Start script
 ```
 <img width="387" alt="Screen Shot 2022-09-08 at 16 11 28" src="https://user-images.githubusercontent.com/79820904/189130858-06402248-76c4-44ba-8d45-b25f5a531b98.png">
- <br />
 Usefull links:
 
 *  Explorer: https://explorer.shardnet.near.org/
