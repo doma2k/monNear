@@ -8,7 +8,7 @@ git clone https://github.com/doma2k/monNear.git  #Clone repo
 chmod +x $HOME/monNear/shardnet.sh #Add permission 
 ~/monNear/shardnet.sh #Start script
 ```
-<img width="407" alt="Screen Shot 2022-07-27 at 13 54 07" src="https://user-images.githubusercontent.com/79820904/181230474-3248bcf3-9b25-4e55-9950-a9a8796de171.png">
+<img width="387" alt="Screen Shot 2022-09-08 at 16 11 28" src="https://user-images.githubusercontent.com/79820904/189130858-06402248-76c4-44ba-8d45-b25f5a531b98.png">
  <br />
 <br />
 Usefull links:
