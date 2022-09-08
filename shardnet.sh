@@ -49,7 +49,7 @@ function setupNode {
   git clone https://github.com/near/nearcore
   cd nearcore
   git fetch
-  git checkout f7f0cb22e85e9c781a9c71df7dcb17f507ff6fde
+  git checkout 1897d5144a7068e4c0d5764d8c9180563db2fe43
   cargo build -p neard --release --features shardnet
   ./target/release/neard --home ~/.near init --chain-id shardnet --download-genesis
   rm ~/.near/config.json
